@@ -105,25 +105,24 @@ nn = NN.new(nn_conf)
 
 usd_jpy_list = readCsv("data/USDJPY.csv") ;
 eur_jpy_list = readCsv("data/EURJPY.csv") ;
-# gbp_jpy_list = readCsv("data/GBPJPY.csv") ;
-# cad_jpy_list = readCsv("data/CADJPY.csv") ;
-# aud_jpy_list = readCsv("data/AUDJPY.csv") ;
+gbp_jpy_list = readCsv("data/GBPJPY.csv") ;
+cad_jpy_list = readCsv("data/CADJPY.csv") ;
+aud_jpy_list = readCsv("data/AUDJPY.csv") ;
 
 previous_datas = Array.new ;
 usd_jpy_list.size.times do |time|
   if time != 0
-  if usd_jpy_list[time+2] == nil
-    break
-  end
-  traning_data={:input => {0 =>usd_jpy_list[time][2].to_f,1 =>eur_jpy_list[time][2].to_f.to_f},:output => {5 =>usd_jpy_list[time+2][2].to_f}} ;
-  nn.training_one_time(traning_data) ;
-  traning_data[:output] = nn.nodes.last.get_w
-  previous_datas.push(traning_data) ;
-  # p previous_datas
-  make_yaml_file("fx_data.yml", previous_datas) ;
+    if usd_jpy_list[time+2] == nil
+      break
+    end
+    traning_data={:input => {0 =>usd_jpy_list[time][2].to_f,1 =>eur_jpy_list[time][2].to_f.to_f,2 =>gbp_jpy_list[time][2].to_f.to_f,3 =>cad_jpy_list[time][2].to_f.to_f,4 =>aud_jpy_list[time][2].to_f.to_f},:output => {11 =>usd_jpy_list[time+2][2].to_f}} ;
+    nn.training_one_time(traning_data) ;
+    # traning_data[:output] = nn.nodes.last.get_w
+    # previous_datas.push(traning_data) ;
+    # make_yaml_file("fx_data.yml", previous_datas) ;
   end
 end
-
+make_yaml_file("nn.yml",nn) ;
 
 
 # every(1.minutes, 'get_data') do
