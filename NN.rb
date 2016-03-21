@@ -4,9 +4,12 @@
 $LOAD_PATH.push(File::dirname($0)) ;
 require "pry"
 require "yaml"
-require "/home/okano/NN/Node"
-require "/home/okano/NN/Link"
-require '/home/okano/lab/oknLib/rubyOkn/BasicTool'
+# require "/home/okano/NN/Node"
+require "Node"
+# require "/home/okano/NN/Link"
+require "Link"
+# require '/home/okano/lab/oknLib/rubyOkn/BasicTool'
+require 'rubyOkn/BasicTool'
 
 include BasicTool
 
@@ -26,6 +29,7 @@ class NN
     @n = 0.1 ;  # 学習率
     @teacher_datas = {} ;
     @threshold = conf[:threshold] ; #しきい値
+    # @threshold = 0; #しきい値
     create_nn()  #設定ファイルからNNを生成
   end
  

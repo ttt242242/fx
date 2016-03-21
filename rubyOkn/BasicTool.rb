@@ -337,10 +337,10 @@ end
     i = 0
     CSV.foreach(csvFile,encoding: "Shift_JIS:UTF-8" ) do |file|
       array.push(file) ;
-      if i == 100
-        break
-      end
-      i +=1
+      # if i == 100
+      #   break
+      # end
+      # i +=1
     end
     return array ;
   end

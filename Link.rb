@@ -4,8 +4,8 @@
 $LOAD_PATH.push(File::dirname($0)) ;
 require "pry"
 require "yaml"
-# require 'rubyOkn/BasicTool'
-require '/home/okano/lab/oknLib/rubyOkn/BasicTool'
+require 'rubyOkn/BasicTool'
+#require '/home/okano/lab/oknLib/rubyOkn/BasicTool'
 
 include BasicTool
 

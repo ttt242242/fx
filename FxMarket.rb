@@ -2,13 +2,13 @@
 # -*- encoding: utf-8 -*-
 
 $LOAD_PATH.push(File::dirname($0)) ;
-require 'nokogiri'
+#require 'nokogiri'
 require 'open-uri'
 require 'yaml'
-require '/home/okano/fx/Link'
-require '/home/okano/fx/Node'
-require '/home/okano/fx/NN'
-require '/home/okano/lab/oknLib/rubyOkn/BasicTool'
+require 'Link'
+require 'Node'
+require 'NN'
+require 'rubyOkn/BasicTool'
 require 'clockwork'
 
 #
@@ -109,19 +109,29 @@ gbp_jpy_list = readCsv("data/GBPJPY.csv") ;
 cad_jpy_list = readCsv("data/CADJPY.csv") ;
 aud_jpy_list = readCsv("data/AUDJPY.csv") ;
 
+# i=0
 previous_datas = Array.new ;
+100.times do 
 usd_jpy_list.size.times do |time|
   if time != 0
     if usd_jpy_list[time+2] == nil
       break
     end
-    traning_data={:input => {0 =>usd_jpy_list[time][2].to_f,1 =>eur_jpy_list[time][2].to_f.to_f,2 =>gbp_jpy_list[time][2].to_f.to_f,3 =>cad_jpy_list[time][2].to_f.to_f,4 =>aud_jpy_list[time][2].to_f.to_f},:output => {11 =>usd_jpy_list[time+2][2].to_f}} ;
+    traning_data={:input => {0 =>usd_jpy_list[time][2].to_f/150.0,1 =>eur_jpy_list[time][2].to_f/150.0,2 =>gbp_jpy_list[time][2].to_f/150.0,3 =>cad_jpy_list[time][2].to_f/150.0,4 =>aud_jpy_list[time][2].to_f/150.0},:output => {11 =>usd_jpy_list[time+2][2].to_f/150.0}} ;
     nn.training_one_time(traning_data) ;
     # traning_data[:output] = nn.nodes.last.get_w
     # previous_datas.push(traning_data) ;
     # make_yaml_file("fx_data.yml", previous_datas) ;
+    # p i
+    # i+=1
+  end
   end
 end
+
+traning_data={:input => {0 =>usd_jpy_list[1000][2].to_f/150.0,1 =>eur_jpy_list[1000][2].to_f/150.0,2 =>gbp_jpy_list[1000][2].to_f/150.0,3 =>cad_jpy_list[1000][2].to_f/150.0,4 =>aud_jpy_list[1000][2].to_f/150.0},:output => {11 =>usd_jpy_list[1002][2].to_f/150.0}} ;
+nn.training_one_time(traning_data) ;
+p nn.nodes.last.get_w
+p usd_jpy_list[1002][2].to_f/150.0
 make_yaml_file("nn.yml",nn) ;
 
 
