@@ -74,8 +74,15 @@ class NN
         from_links = node.get_from_links ;
         sum_value = 0.0 ;
         from_links.each do |link|
+          if link.get_from.get_w().nan? ||  link.get_w().nan?
+            binding.pry ;
+          end
+
           sum_value += link.get_from.get_w() * link.get_w() ;
         end
+    if ( sum_value - @threshold ).nan?
+      binding.pry ;
+    end
         node.input(sum_value - @threshold) ;
       end
     end
@@ -87,6 +94,9 @@ class NN
   #
   def input_practice_data(input_node_num,input_data)
     input_node_num.times do |n|
+      if input_data[n].nan?
+        binding.pry ;
+      end
       @nodes[n].set_w(input_data[n]) ;
     end
   end

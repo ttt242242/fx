@@ -64,282 +64,282 @@ conf:
   :training_data: []
   :threshold: 0.5
 links:
-- &15117260 !ruby/object:Link
-  from: &14416460 !ruby/object:Node
+- &1 !ruby/object:Link
+  from: &2 !ruby/object:Node
     id: 0
     threshold: 0
     link_list: []
     from_links: []
     to_links:
-    - *15117260
-    - &15117080 !ruby/object:Link
-      from: *14416460
-      to: &14415440 !ruby/object:Node
+    - *1
+    - &3 !ruby/object:Link
+      from: *2
+      to: &14 !ruby/object:Node
         id: 6
         threshold: 0
         link_list: []
         from_links:
-        - *15117080
-        - &15116760 !ruby/object:Link
-          from: &14416060 !ruby/object:Node
+        - *3
+        - &4 !ruby/object:Link
+          from: &5 !ruby/object:Node
             id: 3
             threshold: 0
             link_list: []
             from_links: []
             to_links:
-            - *15116760
-            - &15116120 !ruby/object:Link
-              from: *14416060
-              to: &15117580 !ruby/object:Node
+            - *4
+            - &31 !ruby/object:Link
+              from: *5
+              to: &20 !ruby/object:Node
                 id: 10
                 threshold: 0
                 link_list: []
                 from_links:
-                - &15116540 !ruby/object:Link
-                  from: &14416220 !ruby/object:Node
+                - &6 !ruby/object:Link
+                  from: &7 !ruby/object:Node
                     id: 2
                     threshold: 0
                     link_list: []
                     from_links: []
                     to_links:
-                    - *15116540
-                    - &15116420 !ruby/object:Link
-                      from: *14416220
-                      to: &14415640 !ruby/object:Node
+                    - *6
+                    - &26 !ruby/object:Link
+                      from: *7
+                      to: &12 !ruby/object:Node
                         id: 5
                         threshold: 0
                         link_list: []
                         from_links:
-                        - *15117260
-                        - &15117180 !ruby/object:Link
-                          from: &14416360 !ruby/object:Node
+                        - *1
+                        - &8 !ruby/object:Link
+                          from: &9 !ruby/object:Node
                             id: 1
                             threshold: 0
                             link_list: []
                             from_links: []
                             to_links:
-                            - *15117180
-                            - &15116920 !ruby/object:Link
-                              from: *14416360
-                              to: &15117820 !ruby/object:Node
+                            - *8
+                            - &10 !ruby/object:Link
+                              from: *9
+                              to: &11 !ruby/object:Node
                                 id: 8
                                 threshold: 0
                                 link_list: []
                                 from_links:
-                                - *15116920
+                                - *10
                                 to_links:
-                                - &15114720 !ruby/object:Link
-                                  from: *15117820
-                                  to: &15117440 !ruby/object:Node
+                                - &23 !ruby/object:Link
+                                  from: *11
+                                  to: &13 !ruby/object:Node
                                     id: 11
                                     threshold: 0
                                     link_list: []
                                     from_links:
-                                    - &15115080 !ruby/object:Link
-                                      from: *14415640
-                                      to: *15117440
-                                      w: -1.1032804512879117
+                                    - &28 !ruby/object:Link
+                                      from: *12
+                                      to: *13
+                                      w: -0.2660758411558224
                                       id: 21
-                                    - &15114980 !ruby/object:Link
-                                      from: *14415440
-                                      to: *15117440
-                                      w: 2.1343510339293523
+                                    - &38 !ruby/object:Link
+                                      from: *14
+                                      to: *13
+                                      w: -0.4702868600453313
                                       id: 22
-                                    - &15114840 !ruby/object:Link
-                                      from: &14415340 !ruby/object:Node
+                                    - &22 !ruby/object:Link
+                                      from: &15 !ruby/object:Node
                                         id: 7
                                         threshold: 0
                                         link_list: []
                                         from_links:
-                                        - &15117000 !ruby/object:Link
-                                          from: *14416460
-                                          to: *14415340
-                                          w: 0.010359167388982718
+                                        - &39 !ruby/object:Link
+                                          from: *2
+                                          to: *15
+                                          w: 0.9661956849203952
                                           id: 3
-                                        - &15116320 !ruby/object:Link
-                                          from: *14416220
-                                          to: *14415340
-                                          w: -0.8998833635598384
+                                        - &29 !ruby/object:Link
+                                          from: *7
+                                          to: *15
+                                          w: -0.5103090242909823
                                           id: 10
-                                        - &15116000 !ruby/object:Link
-                                          from: *14416060
-                                          to: *14415340
-                                          w: -0.9491393032158154
+                                        - &34 !ruby/object:Link
+                                          from: *5
+                                          to: *15
+                                          w: 0.6594894784698007
                                           id: 13
-                                        - &15115500 !ruby/object:Link
-                                          from: &14415880 !ruby/object:Node
+                                        - &19 !ruby/object:Link
+                                          from: &16 !ruby/object:Node
                                             id: 4
                                             threshold: 0
                                             link_list: []
                                             from_links: []
                                             to_links:
-                                            - &15116660 !ruby/object:Link
-                                              from: *14415880
-                                              to: &15117720 !ruby/object:Node
+                                            - &18 !ruby/object:Link
+                                              from: *16
+                                              to: &17 !ruby/object:Node
                                                 id: 9
                                                 threshold: 0
                                                 link_list: []
                                                 from_links:
-                                                - &15116840 !ruby/object:Link
-                                                  from: *14416360
-                                                  to: *15117720
-                                                  w: 0.2121960854724331
+                                                - &25 !ruby/object:Link
+                                                  from: *9
+                                                  to: *17
+                                                  w: -0.24598759523440727
                                                   id: 5
-                                                - *15116660
-                                                - &15116200 !ruby/object:Link
-                                                  from: *14416220
-                                                  to: *15117720
-                                                  w: 1.5239404927623252
+                                                - *18
+                                                - &30 !ruby/object:Link
+                                                  from: *7
+                                                  to: *17
+                                                  w: 0.4811608219932703
                                                   id: 11
-                                                - &15115800 !ruby/object:Link
-                                                  from: *14416060
-                                                  to: *15117720
-                                                  w: 1.464644193350225
+                                                - &36 !ruby/object:Link
+                                                  from: *5
+                                                  to: *17
+                                                  w: 0.49918954355674416
                                                   id: 15
-                                                - &15115280 !ruby/object:Link
-                                                  from: *14415880
-                                                  to: *15117720
-                                                  w: -0.3108787355622202
+                                                - &21 !ruby/object:Link
+                                                  from: *16
+                                                  to: *17
+                                                  w: 0.4913505812321645
                                                   id: 19
                                                 to_links:
-                                                - &15114600 !ruby/object:Link
-                                                  from: *15117720
-                                                  to: *15117440
-                                                  w: 0.7607708131471227
+                                                - &24 !ruby/object:Link
+                                                  from: *17
+                                                  to: *13
+                                                  w: -0.13563639706705882
                                                   id: 25
-                                                w: 0.8141679373765364
-                                              w: -0.3066720329386628
+                                                w: 0.4479014467183416
+                                              w: 0.3459807824422207
                                               id: 7
-                                            - &15115640 !ruby/object:Link
-                                              from: *14415880
-                                              to: *14415640
-                                              w: -0.12760448548382225
+                                            - &27 !ruby/object:Link
+                                              from: *16
+                                              to: *12
+                                              w: -0.10400260546980902
                                               id: 16
-                                            - *15115500
-                                            - &15115380 !ruby/object:Link
-                                              from: *14415880
-                                              to: *15117580
-                                              w: -0.5584698414327892
+                                            - *19
+                                            - &32 !ruby/object:Link
+                                              from: *16
+                                              to: *20
+                                              w: 0.3926871695085147
                                               id: 18
-                                            - *15115280
-                                            - &15115180 !ruby/object:Link
-                                              from: *14415880
-                                              to: *14415440
-                                              w: 1.27102488128178
+                                            - *21
+                                            - &37 !ruby/object:Link
+                                              from: *16
+                                              to: *14
+                                              w: 0.873042283787521
                                               id: 20
-                                            w: 0.5564
-                                          to: *14415340
-                                          w: -0.3563083287519026
+                                            w: 0.1365514001906525
+                                          to: *15
+                                          w: -0.8309214905769701
                                           id: 17
                                         to_links:
-                                        - *15114840
-                                        w: 0.11748495371903331
-                                      to: *15117440
-                                      w: -1.140814388439354
+                                        - *22
+                                        w: 0.3715221557903019
+                                      to: *13
+                                      w: -0.06109268997201324
                                       id: 23
-                                    - *15114720
-                                    - *15114600
-                                    - &15114520 !ruby/object:Link
-                                      from: *15117580
-                                      to: *15117440
-                                      w: -0.9738955926360717
+                                    - *23
+                                    - *24
+                                    - &33 !ruby/object:Link
+                                      from: *20
+                                      to: *13
+                                      w: -1.2203917554558945
                                       id: 26
                                     to_links: []
-                                    w: 0.7312347154778521
-                                  w: 0.12927233509027147
+                                    w: 0.16336815731463172
+                                  w: -0.9306154955396576
                                   id: 24
-                                w: 0.5480149797557835
-                              w: 0.9274927208914866
+                                w: 0.35540339640195934
+                              w: -0.42668052311398996
                               id: 4
-                            - *15116840
-                            w: 0.7467333333333334
-                          to: *14415640
-                          w: 0.24720756521626538
+                            - *25
+                            w: 0.2235193346504013
+                          to: *12
+                          w: -0.3217619591451379
                           id: 1
-                        - *15116420
-                        - &15115880 !ruby/object:Link
-                          from: *14416060
-                          to: *14415640
-                          w: -1.0487967571730503
+                        - *26
+                        - &35 !ruby/object:Link
+                          from: *5
+                          to: *12
+                          w: -0.15110960612812124
                           id: 14
-                        - *15115640
+                        - *27
                         to_links:
-                        - *15115080
-                        w: 0.23889863658325916
-                      w: 0.11347792069578976
+                        - *28
+                        w: 0.3578637336731005
+                      w: 0.3952575165510344
                       id: 9
-                    - *15116320
-                    - *15116200
-                    w: 0.8845999999999999
-                  to: *15117580
-                  w: -0.40895179898594786
+                    - *29
+                    - *30
+                    w: 0.3288203031098462
+                  to: *20
+                  w: -0.7309011947003536
                   id: 8
-                - *15116120
-                - *15115380
+                - *31
+                - *32
                 to_links:
-                - *15114520
-                w: 0.19872892809861833
-              w: -0.39789241691479293
+                - *33
+                w: 0.34182835509350323
+              w: 0.21497366787688316
               id: 12
-            - *15116000
-            - *15115880
-            - *15115800
-            w: 0.5554
-          to: *14415440
-          w: -0.9239536601632544
+            - *34
+            - *35
+            - *36
+            w: 0.14678861058535844
+          to: *14
+          w: 0.7898354732935022
           id: 6
-        - *15115180
+        - *37
         to_links:
-        - *15114980
-        w: 0.6542642039963644
-      w: 1.714361957750445
+        - *38
+        w: 0.4397134307027775
+      w: 0.1370539457180915
       id: 2
-    - *15117000
-    w: 0.5496
-  to: *14415640
-  w: -0.5250828347570068
+    - *39
+    w: 0.16432035146374147
+  to: *12
+  w: -0.6469935794492429
   id: 0
-- *15117180
-- *15117080
-- *15117000
-- *15116920
-- *15116840
-- *15116760
-- *15116660
-- *15116540
-- *15116420
-- *15116320
-- *15116200
-- *15116120
-- *15116000
-- *15115880
-- *15115800
-- *15115640
-- *15115500
-- *15115380
-- *15115280
-- *15115180
-- *15115080
-- *15114980
-- *15114840
-- *15114720
-- *15114600
-- *15114520
+- *8
+- *3
+- *39
+- *10
+- *25
+- *4
+- *18
+- *6
+- *26
+- *29
+- *30
+- *31
+- *34
+- *35
+- *36
+- *27
+- *19
+- *32
+- *21
+- *37
+- *28
+- *38
+- *22
+- *23
+- *24
+- *33
 nodes:
-- *14416460
-- *14416360
-- *14416220
-- *14416060
-- *14415880
-- *14415640
-- *14415440
-- *14415340
-- *15117820
-- *15117720
-- *15117580
-- *15117440
+- *2
+- *9
+- *7
+- *5
+- *16
+- *12
+- *14
+- *15
+- *11
+- *17
+- *20
+- *13
 errs:
-  11: 0.18196804881118545
+  11: -0.0008140401626764715
 n: 0.1
 teacher_datas: {}
 threshold: 0.5

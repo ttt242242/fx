@@ -337,10 +337,10 @@ end
     i = 0
     CSV.foreach(csvFile,encoding: "Shift_JIS:UTF-8" ) do |file|
       array.push(file) ;
-      # if i == 100
-      #   break
-      # end
-      # i +=1
+      if i == 100
+        break
+      end
+      i +=1
     end
     return array ;
   end
@@ -398,7 +398,11 @@ end
   # === シグモイド関数で変換した値を返す
   #
   def sigmoid_fun(x, a=1)
-    return (1.0/(1.0+Math.exp(-1.0 * a * x))) ;
+    result= (1.0/(1.0+Math.exp(-1.0 * a * x))) ;
+    if result.nan?
+      binding.pry ;
+    end
+    return result
   end
   module_function :sigmoid_fun;
 

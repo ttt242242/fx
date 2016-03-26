@@ -9,6 +9,7 @@ require 'Link'
 require 'Node'
 require 'NN'
 require 'rubyOkn/BasicTool'
+require 'rubyOkn/GenerateGraph'
 require 'clockwork'
 
 #
@@ -25,7 +26,7 @@ include Clockwork
 #  差額に更新しておく 資源の期待値を更新しておく
 
 class FxMarket
- 
+
   def update()
     #前日のデータの取得
     #その日の為替を取得
@@ -82,6 +83,41 @@ class FxMarket
   end 
 end
 
+def test(usd_jpy_list, eur_jpy_list, gbp_jpy_list, cad_jpy_list, aud_jpy_list, nn)
+  test_data_id = rand(usd_jpy_list.size) ;
+  while ( test_data_id > ( usd_jpy_list.size - 2 ) ) || test_data_id == 0
+    test_data_id = rand(usd_jpy_list.size) ;
+  end
+
+  begin
+  sum = usd_jpy_list[test_data_id][2].to_f+eur_jpy_list[test_data_id][2].to_f+gbp_jpy_list[test_data_id][2].to_f+cad_jpy_list[test_data_id][2].to_f+aud_jpy_list[test_data_id][2].to_f
+  rescue
+    p usd_jpy_list[test_data_id][2].to_f
+    p eur_jpy_list[test_data_id][2].to_f
+    p gbp_jpy_list[test_data_id][2].to_f
+    p cad_jpy_list[test_data_id][2].to_f
+    p aud_jpy_list[test_data_id][2].to_f
+    binding.pry ;
+  end
+  # sum = 150
+  
+
+  traning_data={:input => {0 =>usd_jpy_list[test_data_id][2].to_f/sum,1 =>eur_jpy_list[test_data_id][2].to_f/sum,2 =>gbp_jpy_list[test_data_id][2].to_f/sum,3 =>cad_jpy_list[test_data_id][2].to_f/sum,4 =>aud_jpy_list[test_data_id][2].to_f/sum},:output => {11 =>usd_jpy_list[test_data_id+1][2].to_f/sum}} ;
+if (usd_jpy_list[test_data_id][2].to_f/sum).nan?
+        binding.pry ;
+      end
+
+  # traning_data={:input => {0 =>usd_jpy_list[test_data_id][2].to_f/150.0,1 =>eur_jpy_list[test_data_id][2].to_f/150.0,2 =>gbp_jpy_list[test_data_id][2].to_f/150.0,3 =>cad_jpy_list[test_data_id][2].to_f/150.0,4 =>aud_jpy_list[test_data_id][2].to_f/150.0},:output => {11 =>usd_jpy_list[test_data_id+1][2].to_f/150.0}} ;
+  nn.training_one_time(traning_data) ;
+  err =  nn.nodes.last.get_w - usd_jpy_list[test_data_id+1][2].to_f/sum
+  if err.nan?
+    binding.pry ;
+  end
+  return err
+  # p usd_jpy_list[1002][2].to_f/150.0
+
+end
+
 # url = 'http://info.finance.yahoo.co.jp/fx/detail/?code=GBPJPY=FX'
 # doc = Nokogiri::HTML(open(url))
 # bid = doc.xpath("//*[@id='GBPJPY_detail_bid']").text
@@ -96,7 +132,6 @@ end
 # puts "Bid(売値)：#{bid}"
 # puts "Ask(買値)：#{ask}"
 
-
 fx = FxMarket.new ;
 # fx.update()
 system("ruby make_setting.rb") ;
@@ -110,39 +145,51 @@ cad_jpy_list = readCsv("data/CADJPY.csv") ;
 aud_jpy_list = readCsv("data/AUDJPY.csv") ;
 
 # i=0
+graph_data =[] ;
 previous_datas = Array.new ;
-100.times do 
-usd_jpy_list.size.times do |time|
-  if time != 0
-    if usd_jpy_list[time+2] == nil
-      break
+1000.times do |input_num|
+  usd_jpy_list.size.times do |time|
+    if time != 0
+      break if usd_jpy_list[time+2] == nil
+      begin
+      sum = usd_jpy_list[time][2].to_f+eur_jpy_list[time][2].to_f+gbp_jpy_list[time][2].to_f+cad_jpy_list[time][2].to_f+aud_jpy_list[time][2].to_f
+      rescue
+        binding.pry ;
+        end
+      # sum = 150
+      # traning_data={:input => {0 =>usd_jpy_list[time][2].to_f/150.0,1 =>eur_jpy_list[time][2].to_f/150.0,2 =>gbp_jpy_list[time][2].to_f/150.0,3 =>cad_jpy_list[time][2].to_f/150.0,4 =>aud_jpy_list[time][2].to_f/150.0},:output => {11 =>usd_jpy_list[time+2][2].to_f/150.0}} ;
+      traning_data={:input => {0 =>usd_jpy_list[time][2].to_f/sum,1 =>eur_jpy_list[time][2].to_f/sum,2 =>gbp_jpy_list[time][2].to_f/sum,3 =>cad_jpy_list[time][2].to_f/sum,4 =>aud_jpy_list[time][2].to_f/sum},:output => {11 =>usd_jpy_list[time+1][2].to_f/sum}} ;
+      if (usd_jpy_list[time][2].to_f/sum).nan?
+        binding.pry ;
+      end
+      nn.training_one_time(traning_data) ;
+      # traning_data[:output] = nn.nodes.last.get_w
+      # previous_datas.push(traning_data) ;
+      # make_yaml_file("fx_data.yml", previous_datas) ;
+      # p i
+      # i+=1
     end
-    traning_data={:input => {0 =>usd_jpy_list[time][2].to_f/150.0,1 =>eur_jpy_list[time][2].to_f/150.0,2 =>gbp_jpy_list[time][2].to_f/150.0,3 =>cad_jpy_list[time][2].to_f/150.0,4 =>aud_jpy_list[time][2].to_f/150.0},:output => {11 =>usd_jpy_list[time+2][2].to_f/150.0}} ;
-    nn.training_one_time(traning_data) ;
-    # traning_data[:output] = nn.nodes.last.get_w
-    # previous_datas.push(traning_data) ;
-    # make_yaml_file("fx_data.yml", previous_datas) ;
-    # p i
-    # i+=1
   end
-  end
+  graph_data.push( test(usd_jpy_list, eur_jpy_list, gbp_jpy_list, cad_jpy_list, aud_jpy_list, nn) ) if input_num % 1 == 0
 end
 
-traning_data={:input => {0 =>usd_jpy_list[1000][2].to_f/150.0,1 =>eur_jpy_list[1000][2].to_f/150.0,2 =>gbp_jpy_list[1000][2].to_f/150.0,3 =>cad_jpy_list[1000][2].to_f/150.0,4 =>aud_jpy_list[1000][2].to_f/150.0},:output => {11 =>usd_jpy_list[1002][2].to_f/150.0}} ;
-nn.training_one_time(traning_data) ;
-p nn.nodes.last.get_w
-p usd_jpy_list[1002][2].to_f/150.0
+conf = GenerateGraph.make_default_conf
+GenerateGraph.time_step(graph_data, conf)
+
+test(usd_jpy_list, eur_jpy_list, gbp_jpy_list, cad_jpy_list, aud_jpy_list, nn) ;
+
 make_yaml_file("nn.yml",nn) ;
 
 
+# 以下定期的に実行
 # every(1.minutes, 'get_data') do
 #
 #
-# if File.exist?("fx_data.yml") 
-#   previous_datas = YAML.load_file("fx_data.yml") ;
-# else
-#   previous_datas = Array.new ;
-# end
+# # if File.exist?("fx_data.yml") 
+# #   previous_datas = YAML.load_file("fx_data.yml") ;
+# # else
+# #   previous_datas = Array.new ;
+# # end
 #
 # today_datas = fx.get_today_data();
 # traning_data={:input => {0 =>today_datas[:GBPJPY][:ask].to_f,1 =>today_datas[:USDJPY][:ask].to_f},:output => {5 =>today_datas[:USDJPY][:bid].to_f}} ;
@@ -151,3 +198,4 @@ make_yaml_file("nn.yml",nn) ;
 # previous_datas.push(traning_data) ;
 # make_yaml_file("fx_data.yml", previous_datas) ;
 # end
+

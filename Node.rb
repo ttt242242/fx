@@ -67,7 +67,10 @@ class Node
   # === 発火するかどうか
   #     check to fire or not
   #
+  
   def input(sum_value)
+    
+
     @w = sigmoid_fun(sum_value)  ;
   end
 
@@ -75,6 +78,9 @@ class Node
   # === ノードの値をセット
   #
   def set_w(w)
+    if w.nan?
+      binding.pry ;
+    end
     @w = w;
   end
 

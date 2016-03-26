@@ -16,33 +16,54 @@ require "narray"
 #
 module MathTool
 
+  #================================================#
   #
-  # ===ボックス―ミューラー法をよる正規分布乱数発生
-  # @param mu flout 平均
-  # @param sigma flout 標準偏差
-  # @return ボックスミューラー法に従う正規分布に従う乱数を生成
+  # === 分布生成 用モジュール
   #
-  def normal_rand(mu = 0,sigma = 1.0)
-    a, b = rand(), rand() ;
-    return (Math.sqrt(-2*Math.log(rand()))*Math.sin(2*Math::PI*rand()) * sigma) + mu
-  end
-  module_function :normal_rand ;
+  #================================================#
+  module GenerateRand
+      #
+      # === 指数分布に従った乱数を返す
+      #
+      def exp(ave=0.5)
+        x = rand() ;
+        y = rand() ;
+        while ((1.0/ave)*Math.exp(-(x/ave)) < y )
+          x = rand() ;
+          y = rand() ;
+        end
+        return x ;
+      end
+      module_function :exp;
 
-  #
-  # ===ポアソン分布に従う乱数を発生する
-  #
-  def poisson_rand(mu=0.0)
-    lambda = Math.exp(-mu)
-    k = 0
-    p = 1.0
-    while p >= lambda
-      p *= rand()
-      k += 1
-    end
-    return k - 1
-  end
-  module_function :poisson_rand;
+      #
+      # ===ボックス―ミューラー法をよる正規分布乱数発生
+      # @param mu flout 平均
+      # @param sigma flout 標準偏差
+      # @return ボックスミューラー法に従う正規分布に従う乱数を生成
+      #
+      def normal_rand(mu = 0,sigma = 1.0)
+        a, b = rand(), rand() ;
+        return (Math.sqrt(-2*Math.log(rand()))*Math.sin(2*Math::PI*rand()) * sigma) + mu
+      end
+      module_function :normal_rand ;
 
+      #
+      # ===ポアソン分布に従う乱数を発生する
+      #
+      def poisson_rand(mu=0.0)
+        lambda = Math.exp(-mu)
+        k = 0
+        p = 1.0
+        while p >= lambda
+          p *= rand()
+          k += 1
+        end
+        return k - 1
+      end
+      module_function :poisson_rand;
+
+  end
 
   #
   # === シグモイド関数で変換した値を返す
