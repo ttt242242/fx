@@ -154,17 +154,17 @@ previous_datas = Array.new ;
     if time != 0
       break if usd_jpy_list[time+2] == nil
       begin
-      sum = usd_jpy_list[time][2].to_f+eur_jpy_list[time][2].to_f+gbp_jpy_list[time][2].to_f+cad_jpy_list[time][2].to_f+aud_jpy_list[time][2].to_f
-      sum2 = usd_jpy_list[time+1][2].to_f+eur_jpy_list[time+1][2].to_f+gbp_jpy_list[time+1][2].to_f+cad_jpy_list[time+1][2].to_f+aud_jpy_list[time+1][2].to_f
+      sum = usd_jpy_list[time][5].to_f+eur_jpy_list[time][5].to_f+gbp_jpy_list[time][5].to_f+cad_jpy_list[time][5].to_f+aud_jpy_list[time][5].to_f
+      sum2 = usd_jpy_list[time+1][5].to_f+eur_jpy_list[time+1][5].to_f+gbp_jpy_list[time+1][5].to_f+cad_jpy_list[time+1][5].to_f+aud_jpy_list[time+1][5].to_f
       rescue
         binding.pry ;
       end
       # sum = 150
-      # traning_data={:input => {0 =>usd_jpy_list[time][2].to_f/150.0,1 =>eur_jpy_list[time][2].to_f/150.0,2 =>gbp_jpy_list[time][2].to_f/150.0,3 =>cad_jpy_list[time][2].to_f/150.0,4 =>aud_jpy_list[time][2].to_f/150.0},:output => {11 =>usd_jpy_list[time+2][2].to_f/150.0}} ;
-      traning_data={:input => {0 =>usd_jpy_list[time][2].to_f/sum,1 =>eur_jpy_list[time][2].to_f/sum,2 =>gbp_jpy_list[time][2].to_f/sum,3 =>cad_jpy_list[time][2].to_f/sum,4 =>aud_jpy_list[time][2].to_f/sum},:output => {11 =>usd_jpy_list[time+1][2].to_f/sum2}} ;
+      # traning_data={:input => {0 =>usd_jpy_list[time][5].to_f/150.0,1 =>eur_jpy_list[time][5].to_f/150.0,5 =>gbp_jpy_list[time][5].to_f/150.0,3 =>cad_jpy_list[time][5].to_f/150.0,4 =>aud_jpy_list[time][5].to_f/150.0},:output => {11 =>usd_jpy_list[time+5][5].to_f/150.0}} ;
+      traning_data={:input => {0 =>usd_jpy_list[time][5].to_f/sum,1 =>eur_jpy_list[time][5].to_f/sum,5 =>gbp_jpy_list[time][5].to_f/sum,3 =>cad_jpy_list[time][5].to_f/sum,4 =>aud_jpy_list[time][5].to_f/sum},:output => {11 =>usd_jpy_list[time+1][5].to_f/sum2}} ;
       nn.training_one_time(traning_data) ;
 
-      previous_data={:GBPJPY=>gbp_jpy_list[time][2].to_f/sum, :USDJPY=>usd_jpy_list[time][2].to_f/sum,:EURJPY =>eur_jpy_list[time][2].to_f/sum, :CADJPY=>cad_jpy_list[time][2].to_f/sum , :AUDJPY=>aud_jpy_list[time][2].to_f/sum}
+      previous_data={:GBPJPY=>gbp_jpy_list[time][5].to_f/sum, :USDJPY=>usd_jpy_list[time][5].to_f/sum,:EURJPY =>eur_jpy_list[time][5].to_f/sum, :CADJPY=>cad_jpy_list[time][5].to_f/sum , :AUDJPY=>aud_jpy_list[time][5].to_f/sum}
 
       # traning_data[:output] = nn.nodes.last.get_w
       # previous_datas.push(traning_data) ;
@@ -186,11 +186,9 @@ graph_data=[]
 every(1.day, 'get_data') do
 
 
-if File.exist?("fx_data.yml") 
-  data = YAML.load_file("fx_data.yml") ;
-else
+if !File.exist?("/home/okano/Copy/fx_data.yml") 
   data= Array.new ;
-  make_yaml_file("fx_data.yml",data) ;
+  make_yaml_file("/home/okano/Copy/fx_data.yml",data) ;
 end
 
 today_data = fx.get_today_data();
@@ -211,9 +209,9 @@ result[:nn_output] = nn.nodes.last.get_w ;
 err =  nn.nodes.last.get_w - today_data[:USDJPY].to_f/sum2
 result[:err] = err
 
-all_result = YAML.load_file("fx_data.yml") ;
+all_result = YAML.load_file("/home/okano/Copy/fx_data.yml") ;
 all_result.push(result) ;
-make_yaml_file("fx_data.yml",all_result) ;
+make_yaml_file("/home/okano/Copy/fx_data.yml",all_result) ;
 
 graph_data =[] ;
 all_result.each do |rlt|
