@@ -94,7 +94,11 @@ class NN
   #
   def input_practice_data(input_node_num,input_data)
     input_node_num.times do |n|
-      if input_data[n].nan?
+      begin
+        if input_data[n].nan?
+          binding.pry ;
+        end
+      rescue
         binding.pry ;
       end
       @nodes[n].set_w(input_data[n]) ;

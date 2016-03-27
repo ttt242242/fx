@@ -12,7 +12,7 @@ require '~/lab/fx/NN'
 # require 'NN'
 # require 'rubyOkn/BasicTool'
 require '~/lab/oknlibs/rubyOkn/BasicTool'
-require '~/lab/oknlibs/rubyOkn/GenerateGraph'
+require '~/fx/rubyOkn/GenerateGraph'
 # require 'rubyOkn/GenerateGraph'
 require 'clockwork'
 require 'date'
@@ -154,17 +154,17 @@ previous_datas = Array.new ;
     if time != 0
       break if usd_jpy_list[time+2] == nil
       begin
-      sum = usd_jpy_list[time][5].to_f+eur_jpy_list[time][5].to_f+gbp_jpy_list[time][5].to_f+cad_jpy_list[time][5].to_f+aud_jpy_list[time][5].to_f
-      sum2 = usd_jpy_list[time+1][5].to_f+eur_jpy_list[time+1][5].to_f+gbp_jpy_list[time+1][5].to_f+cad_jpy_list[time+1][5].to_f+aud_jpy_list[time+1][5].to_f
+      sum = usd_jpy_list[time][4].to_f+eur_jpy_list[time][4].to_f+gbp_jpy_list[time][4].to_f+cad_jpy_list[time][4].to_f+aud_jpy_list[time][4].to_f
+      sum2 = usd_jpy_list[time+1][4].to_f+eur_jpy_list[time+1][4].to_f+gbp_jpy_list[time+1][4].to_f+cad_jpy_list[time+1][4].to_f+aud_jpy_list[time+1][4].to_f
       rescue
         binding.pry ;
       end
       # sum = 150
       # traning_data={:input => {0 =>usd_jpy_list[time][5].to_f/150.0,1 =>eur_jpy_list[time][5].to_f/150.0,5 =>gbp_jpy_list[time][5].to_f/150.0,3 =>cad_jpy_list[time][5].to_f/150.0,4 =>aud_jpy_list[time][5].to_f/150.0},:output => {11 =>usd_jpy_list[time+5][5].to_f/150.0}} ;
-      traning_data={:input => {0 =>usd_jpy_list[time][5].to_f/sum,1 =>eur_jpy_list[time][5].to_f/sum,5 =>gbp_jpy_list[time][5].to_f/sum,3 =>cad_jpy_list[time][5].to_f/sum,4 =>aud_jpy_list[time][5].to_f/sum},:output => {11 =>usd_jpy_list[time+1][5].to_f/sum2}} ;
+      traning_data={:input => {0 =>usd_jpy_list[time][4].to_f/sum,1 =>eur_jpy_list[time][4].to_f/sum,2 =>gbp_jpy_list[time][4].to_f/sum,3 =>cad_jpy_list[time][4].to_f/sum,4 =>aud_jpy_list[time][4].to_f/sum},:output => {11 =>usd_jpy_list[time+1][4].to_f/sum2}} ;
       nn.training_one_time(traning_data) ;
 
-      previous_data={:GBPJPY=>gbp_jpy_list[time][5].to_f/sum, :USDJPY=>usd_jpy_list[time][5].to_f/sum,:EURJPY =>eur_jpy_list[time][5].to_f/sum, :CADJPY=>cad_jpy_list[time][5].to_f/sum , :AUDJPY=>aud_jpy_list[time][5].to_f/sum}
+      previous_data={:GBPJPY=>gbp_jpy_list[time][4].to_f/sum, :USDJPY=>usd_jpy_list[time][4].to_f/sum,:EURJPY =>eur_jpy_list[time][4].to_f/sum, :CADJPY=>cad_jpy_list[time][4].to_f/sum , :AUDJPY=>aud_jpy_list[time][4].to_f/sum}
 
       # traning_data[:output] = nn.nodes.last.get_w
       # previous_datas.push(traning_data) ;
@@ -177,13 +177,13 @@ previous_datas = Array.new ;
 end
 
 
-test(usd_jpy_list, eur_jpy_list, gbp_jpy_list, cad_jpy_list, aud_jpy_list, nn) ;
-
+# test(usd_jpy_list, eur_jpy_list, gbp_jpy_list, cad_jpy_list, aud_jpy_list, nn) ;
+puts "########################"
 # make_yaml_file("nn.yml",nn) ;
 
 graph_data=[]
 # 以下定期的に実行
-every(1.day, 'get_data') do
+every(1.seconds, 'get_data') do
 
 
 if !File.exist?("/home/okano/Copy/fx_data.yml") 
@@ -200,6 +200,9 @@ sum2 = today_data[:GBPJPY].to_f+today_data[:EURJPY].to_f+today_data[:USDJPY].to_
 
 traning_data={:input => {0 =>previous_data[:USDJPY].to_f/sum,1 =>previous_data[:EURJPY].to_f/sum,2 =>previous_data[:GBPJPY].to_f/sum,3 =>previous_data[:CADJPY].to_f/sum,4 =>previous_data[:AUDJPY].to_f/sum},:output => {11 =>today_data[:USDJPY].to_f/sum2}} ;
 nn.training_one_time(traning_data) ;
+
+
+previous_data_tmp = previous_data ;
 previous_data = today_data
 #====================
 
@@ -208,17 +211,23 @@ result[:date] = Date.today.strftime("%Y.%m.%d") ;
 result[:nn_output] = nn.nodes.last.get_w ;
 err =  nn.nodes.last.get_w - today_data[:USDJPY].to_f/sum2
 result[:err] = err
+result[:err_previous] = nn.nodes.last.get_w-(previous_data_tmp[:USDJPY].to_f/sum) ;
 
 all_result = YAML.load_file("/home/okano/Copy/fx_data.yml") ;
 all_result.push(result) ;
 make_yaml_file("/home/okano/Copy/fx_data.yml",all_result) ;
 
+graph_data_list=[] ;
 graph_data =[] ;
+graph_data2 = [] ;
 all_result.each do |rlt|
-  graph_data.push(rlt[:err].abs) ;
+  graph_data.push(rlt[:err]) ;
+  # graph_data2.push(rlt[:err_previous]) ;
 end
+graph_data_list.push(graph_data) ;
+# graph_data_list.push(graph_data2) ;
 conf = GenerateGraph.make_default_conf
-GenerateGraph.time_step(graph_data, conf)
+GenerateGraph.list_time_step(graph_data_list, conf)
 
 end
 
