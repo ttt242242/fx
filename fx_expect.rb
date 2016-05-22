@@ -86,8 +86,8 @@ class MyFxTool
   # === 定期的に実行する
   #
   def expect
-
-    every(1.seconds, 'get_data') do
+    every(1.day, 'get_data', :at => '1:00') do
+    # every(1.day, 'get_data') do
       if !File.exist?("/home/okano/Copy/fx_data.yml") 
         data= Array.new ;
         make_yaml_file("/home/okano/Copy/fx_data.yml",data) ;
@@ -102,9 +102,10 @@ class MyFxTool
 
       @previous_data_tmp = @previous_data ;
       @previous_data = @today_data
-
+    
+     puts "############"
      make_result(sum, sum2) ;
-      puts "############"
+     puts "############"
     end
   end
 
@@ -119,9 +120,9 @@ class MyFxTool
     result[:err] = err
     result[:err_previous] = @nn.nodes.last.get_w-(@previous_data_tmp[:USDJPY].to_f/sum) ;
 
-    all_result = YAML.load_file("/home/okano/Copy/fx_data.yml") ;
+    all_result = YAML.load_file("/home/okano/googledrive/fx_data.yml") ;
     all_result.push(result) ;
-    make_yaml_file("/home/okano/Copy/fx_data.yml",all_result) ;
+    make_yaml_file("/home/okano/googledrive/fx_data.yml",all_result) ;
 
     graph_data_list=[] ;
     graph_data =[] ;

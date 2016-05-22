@@ -71,10 +71,14 @@ module GenerateGraph
   #
   # === 普通に描写
   #
-  def data_set(plot, x, y, conf)
+  def data_set(plot, x, y, conf, title=nil)
     plot.data << Gnuplot::DataSet.new( [x,y] ) do |ds|
       ds.with = conf[:ds]   #line＋point
-      ds.title = conf[:graph_title];
+      if title == nil
+        ds.title = conf[:graph_title];
+      else
+        ds.title = title
+      end
       ds.linewidth = conf[:linewidth] 
       ds.title
     end
@@ -196,7 +200,7 @@ module GenerateGraph
     Gnuplot.open do |gp|
       Gnuplot::Plot.new( gp ) do |plot|
         set_plot_conf(plot, conf) ;
-        data_list_list.each do |data_list|
+        data_list_list.each_with_index do |data_list, j|
           x =Array.new
           y = Array.new 
           err = Array.new
@@ -204,7 +208,7 @@ module GenerateGraph
             x.push(i)
             y.push(data)
           end
-          data_set(plot, x, y, conf) ;
+          data_set(plot, x, y, conf,conf[:graph_title][j]) ;
         end
         data_set_with_err(plot, x, y, conf, err) if conf[:is_errbar]   #エラーバーがあれば
 
