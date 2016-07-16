@@ -14,7 +14,7 @@ ruby fx_expect.rb
 Copyの中にfx_data.ymlという形で保存していく
 
 ### プログラム
-* fx_expect.rbがメインプログラム
+* MyFxTool.rbがメインプログラム
 * NN.rbはニューラルネットワーク
 
 ### 課題
