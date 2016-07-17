@@ -88,9 +88,9 @@ class MyFxTool
   def expect
     every(1.day, 'get_data', :at => '1:00') do
     # every(1.day, 'get_data') do
-      if !File.exist?("/home/okano/Copy/fx_data.yml") 
+      if !File.exist?("/home/okano/MEGA/fx_data.yml") 
         data= Array.new ;
-        make_yaml_file("/home/okano/Copy/fx_data.yml",data) ;
+        make_yaml_file("/home/okano/MEGA/fx_data.yml",data) ;
       end
       @today_data = get_today_data();  #今日のデータの取得する
 
@@ -120,9 +120,19 @@ class MyFxTool
     result[:err] = err
     result[:err_previous] = @nn.nodes.last.get_w-(@previous_data_tmp[:USDJPY].to_f/sum) ;
 
-    all_result = YAML.load_file("/home/okano/googledrive/fx_data.yml") ;
+    # 本日のデータで予測 ================================================
+    expect_data={:input => {0 =>@today_data[:USDJPY].to_f/sum2,1 =>@today_data[:EURJPY].to_f/sum2,2 =>@today_data[:GBPJPY].to_f/sum2,3 =>@today_data[:CADJPY].to_f/sum2,4 =>@today_data[:AUDJPY].to_f/sum2}} ;  #訓練データ(正規化したデータで
+    @nn.propagation(expect_data) ; #nnで学習
+    result[:expect_next_day] = @nn.nodes.last.get_w ;
+    p "================================================" ;
+    p result[:data] ;
+    p "err : "+result[:err] ;
+    p "expect : "+result[:err] ;
+    # ================================================ko
+    
+    all_result = YAML.load_file("/home/okano/MEGA/fx_data.yml") ;
     all_result.push(result) ;
-    make_yaml_file("/home/okano/googledrive/fx_data.yml",all_result) ;
+    make_yaml_file("/home/okano/MEGA/fx_data.yml",all_result) ;
 
     graph_data_list=[] ;
     graph_data =[] ;
