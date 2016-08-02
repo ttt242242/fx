@@ -19,11 +19,7 @@ module GenerateGraph
   #
   def make_default_conf(title=nil)
     conf ={}
-    if title.nil?
-    conf[:title] = "reward"  ;
-    else
-    conf[:title] = title ;
-    end
+    conf[:title] = "reward" 
     conf[:linewidth] = 0.4 ;
     conf[:ds] = "lp" ;
     conf[:hanreiPos] = "right bottom" ;
@@ -78,25 +74,12 @@ module GenerateGraph
   def data_set(plot, x, y, conf)
     plot.data << Gnuplot::DataSet.new( [x,y] ) do |ds|
       ds.with = conf[:ds]   #line＋point
-      ds.title = conf[:graph_title]; 
+      ds.title = conf[:graph_title];
       ds.linewidth = conf[:linewidth] 
       ds.title
     end
   end
   module_function :data_set  ;
-
-  #
-  # === 普通に描写(グラフ複数)
-  #
-  def data_set2(plot, x, y, conf, graphnum)
-    plot.data << Gnuplot::DataSet.new( [x,y] ) do |ds|
-      ds.with = conf[:ds]   #line＋point
-      ds.title = conf[:graph_title][graphnum]; 
-      ds.linewidth = conf[:linewidth] 
-      ds.title
-    end
-  end
-  module_function :data_set2  ;
 
   #
   # === errバーの追加
@@ -213,7 +196,7 @@ module GenerateGraph
     Gnuplot.open do |gp|
       Gnuplot::Plot.new( gp ) do |plot|
         set_plot_conf(plot, conf) ;
-        data_list_list.each_with_index do |data_list, j|
+        data_list_list.each do |data_list|
           x =Array.new
           y = Array.new 
           err = Array.new
@@ -221,7 +204,7 @@ module GenerateGraph
             x.push(i)
             y.push(data)
           end
-          data_set2(plot, x, y, conf, j) ;
+          data_set(plot, x, y, conf) ;
         end
         data_set_with_err(plot, x, y, conf, err) if conf[:is_errbar]   #エラーバーがあれば
 

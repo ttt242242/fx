@@ -86,7 +86,8 @@ class MyFxTool
   # === 定期的に実行する
   #
   def expect
-    every(1.day, 'get_data', :at => '1:00') do
+    every(1.minutes, 'get_data') do
+    # every(1.minutes, 'get_data', :at => '1:00') do
     # every(1.day, 'get_data') do
       if !File.exist?("/home/okano/MEGA/fx_data.yml") 
         data= Array.new ;
@@ -105,6 +106,7 @@ class MyFxTool
     
      puts "############"
      make_result(sum, sum2) ;
+     system('ruby make_fx_graph.rb') ;
      puts "############"
     end
   end
@@ -121,13 +123,14 @@ class MyFxTool
     result[:err_previous] = @nn.nodes.last.get_w-(@previous_data_tmp[:USDJPY].to_f/sum) ;
 
     # 本日のデータで予測 ================================================
-    expect_data={:input => {0 =>@today_data[:USDJPY].to_f/sum2,1 =>@today_data[:EURJPY].to_f/sum2,2 =>@today_data[:GBPJPY].to_f/sum2,3 =>@today_data[:CADJPY].to_f/sum2,4 =>@today_data[:AUDJPY].to_f/sum2}} ;  #訓練データ(正規化したデータで
+    expect_data={0 =>@today_data[:USDJPY].to_f/sum2,1 =>@today_data[:EURJPY].to_f/sum2,2 =>@today_data[:GBPJPY].to_f/sum2,3 =>@today_data[:CADJPY].to_f/sum2,4 =>@today_data[:AUDJPY].to_f/sum2} ;  #訓練データ(正規化したデータで
     @nn.propagation(expect_data) ; #nnで学習
     result[:expect_next_day] = @nn.nodes.last.get_w ;
     p "================================================" ;
     p result[:data] ;
-    p "err : "+result[:err] ;
-    p "expect : "+result[:err] ;
+    p "today : "+( @today_data[:USDJPY].to_f/sum2 ).to_s ;
+    p "err : "+result[:err].to_s ;
+    p "expect : "+result[:expect_next_day].to_s ;
     # ================================================ko
     
     all_result = YAML.load_file("/home/okano/MEGA/fx_data.yml") ;

@@ -5,8 +5,7 @@ require "pry"
 require "yaml"
 require "csv"
 require "narray"
-require 'MeCab'
-# require 'natto'
+require 'natto'
 # require "marshal"
 
 #
@@ -43,10 +42,8 @@ module StringTool
   # @return word_array array 結果の単語リスト
   #
   def get_words(text)
-    mecab = MeCab::Tagger.new
-    # mecab = Natto::MeCab.new
+    mecab = Natto::MeCab::Tagger.new
     node = mecab.parseToNode(text)
-    node = mecab.parse(text)
     word_array = []
      #名詞だけとってくる
       begin
